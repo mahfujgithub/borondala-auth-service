@@ -6,16 +6,12 @@
   "scripts": {
     "start": "ts-node-dev --respawn --transpile-only src/server.ts",
     "lint:check": "eslint --ignore-pattern .eslintignore .js,.ts .",
-    "lint:fix": "eslint --fix",
-    "prettier:check": "prettier --ignore-path .gitIgnore --write \"**/*.+(js|ts|json)\"",
+    "prettier:fix": "prettier --write .",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky"
   },
   "author": "BoronDala",
   "license": "ISC",
-  "lint-staged": {
-    "src/**/*.ts": "yarn lint-prettier"
-  },
   "devDependencies": {
     "@eslint/js": "^9.9.1",
     "@types/cors": "^2.8.17",
@@ -23,7 +19,6 @@
     "eslint-config-prettier": "^9.1.0",
     "globals": "^15.9.0",
     "husky": "^9.1.5",
-    "lint-staged": "^15.2.10",
     "prettier": "^3.3.3",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.5.4",
