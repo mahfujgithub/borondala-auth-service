@@ -29,11 +29,11 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   } else if (err instanceof ApiError) {
     statusCode = err?.statusCode
     message = err?.message
-    errorMessages: err?.message
+    errorMessages = err?.message
       ? [
           {
             path: '',
-            messages: err?.message,
+            message: err?.message,
           },
         ]
       : []
