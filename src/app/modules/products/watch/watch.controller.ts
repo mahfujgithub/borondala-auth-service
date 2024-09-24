@@ -3,6 +3,9 @@ import { WatchService } from './watch.service';
 import catchAsync from '../../../../shared/catchAsync';
 import sendResponse from '../../../../shared/sendResponse';
 import httpStatus from 'http-status';
+import { IWatch } from './watch.interface';
+import pick from '../../../../shared/pick';
+import { paginationFields } from '../../../../constants/pagination';
 
 const createWatch = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -10,7 +13,7 @@ const createWatch = catchAsync(
 
     const result = await WatchService.createWatch(watch);
 
-    sendResponse(res, {
+    sendResponse<IWatch>(res, {
       statusCode: httpStatus.OK,
       success: true,
       message: 'Watch created successfully!',
@@ -21,6 +24,24 @@ const createWatch = catchAsync(
   },
 );
 
+const getAllWatches = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {    
+
+    const paginationOptions = pick(req.query, paginationFields)
+
+    const result = await WatchService.getAllWatches(paginationOptions);
+
+    sendResponse<IWatch[]>(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Watches Retrieved successfully!',
+      meta: result.meta,
+      data: result.data,
+    });
+  },
+);
+
 export const WatchController = {
   createWatch,
+  getAllWatches,
 };
