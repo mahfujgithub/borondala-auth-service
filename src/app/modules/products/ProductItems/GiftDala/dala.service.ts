@@ -62,7 +62,8 @@ const getAllDala = async (
     sortConditions[sortBy] = sortOrder;
   }
 
-  const whereConditions = andConditions.length > 0 ? { $and: andConditions} : {};
+  const whereConditions =
+    andConditions.length > 0 ? { $and: andConditions } : {};
 
   const result = await Dala.find(whereConditions)
     .sort(sortConditions)
@@ -85,10 +86,28 @@ const getSingleDala = async (id: string): Promise<IDala | null> => {
   const result = await Dala.findById(id);
 
   return result;
-}
+};
+
+const updateDala = async (
+  id: string,
+  payload: Partial<IDala>,
+): Promise<IDala | null> => {
+  const result = await Dala.findOneAndUpdate({ _id: id }, payload, {
+    new: true,
+  });
+  return result;
+};
+
+const deleteDala = async (id: string): Promise<IDala | null> => {
+  const result = await Dala.findByIdAndDelete(id);
+
+  return result;
+};
 
 export const DalaService = {
   createDala,
   getAllDala,
   getSingleDala,
+  updateDala,
+  deleteDala,
 };

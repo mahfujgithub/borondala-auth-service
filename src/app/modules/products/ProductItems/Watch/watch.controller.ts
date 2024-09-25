@@ -38,6 +38,8 @@ const getAllWatches = catchAsync(
       meta: result.meta,
       data: result.data,
     });
+
+    next();
   },
 );
 
