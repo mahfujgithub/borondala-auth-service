@@ -44,10 +44,6 @@ const getAllDala = async (
       })),
     });
   }
-
-  // console.log(Object.entries(filtersData))
-
-  // const andConditions = [
   //   {
   //     $or: [
   //       {
@@ -85,7 +81,14 @@ const getAllDala = async (
   };
 };
 
+const getSingleDala = async (id: string): Promise<IDala | null> => {
+  const result = await Dala.findById(id);
+
+  return result;
+}
+
 export const DalaService = {
   createDala,
   getAllDala,
+  getSingleDala,
 };

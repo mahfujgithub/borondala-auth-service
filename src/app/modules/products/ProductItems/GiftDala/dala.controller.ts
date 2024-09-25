@@ -43,7 +43,25 @@ const getAllDala = catchAsync(
   },
 );
 
+const getSingleDala = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id;
+
+    const result = await DalaService.getSingleDala(id);
+
+    sendResponse<IDala>(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Dala Retrieved successfully!',
+      data: result,
+    });
+
+    next();
+  }
+)
+
 export const DalaController = {
   createDala,
   getAllDala,
+  getSingleDala,
 };

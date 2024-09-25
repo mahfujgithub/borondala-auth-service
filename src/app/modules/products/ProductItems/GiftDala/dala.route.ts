@@ -8,4 +8,6 @@ router.post('/create', DalaController.createDala);
 
 router.get('/', DalaController.getAllDala);
 
+router.get('/:id', DalaController.getSingleDala);
+
 export const DalaRoutes = router;
