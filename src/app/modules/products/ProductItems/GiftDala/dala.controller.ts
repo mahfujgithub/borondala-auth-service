@@ -5,7 +5,7 @@ import sendResponse from "../../../../../shared/sendResponse";
 import httpStatus from "http-status";
 import { IDala } from "./dala.interface";
 import pick from "../../../../../shared/pick";
-import { paginationFields } from "../../../../../constants/pagination";
+import { dalaFilterableFields, paginationFields } from "../../../../../constants/pagination";
 
 const createDala = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
@@ -26,9 +26,12 @@ const createDala = catchAsync(
 
 const getAllDala = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
+    const filters = pick(req.query, dalaFilterableFields);
     const paginationOptions = pick(req.query, paginationFields);
 
-    const result = await DalaService.getAllDala(paginationOptions);
+    console.log(filters)
+
+    const result = await DalaService.getAllDala(paginationOptions, filters);
 
     sendResponse<IDala[]>(res, {
       statusCode: httpStatus.OK,

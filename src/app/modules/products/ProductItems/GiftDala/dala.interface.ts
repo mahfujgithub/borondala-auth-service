@@ -2,6 +2,7 @@ import { Model } from "mongoose";
 
 export type IDala = {
   title: string;
+  category: string;
   images: [string];
   dalaCode: Number;
   items: string[];
@@ -15,3 +16,7 @@ export type IDala = {
 };
 
 export type DalaModel = Model<IDala, Record<string, unknown>>;
+
+export type IDalaFilters = {
+  searchTerm?: string;
+};

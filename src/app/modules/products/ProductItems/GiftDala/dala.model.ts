@@ -7,6 +7,7 @@ import { IDala, DalaModel } from './dala.interface';
 const dalaSchema = new Schema<IDala>(
   {
     title: { type: String, required: true },
+    category: { type: String, required: true, default: 'dala' },
     images: { type: [String], required: true },
     dalaCode: { type: Number, required: true },
     items: { type: [String], required: true },

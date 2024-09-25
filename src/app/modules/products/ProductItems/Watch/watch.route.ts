@@ -4,8 +4,8 @@ import { WatchController } from './watch.controller'
 // import { UserValidation } from './user.validation'
 import validateRequest from '../../../../middlewares/validateRequest';
 
-router.post('/create-watch', WatchController.createWatch)
+router.post('/create', WatchController.createWatch)
 
-router.get('/watches', WatchController.getAllWatches)
+router.get('/', WatchController.getAllWatches)
 
 export const WatchRoutes = router
