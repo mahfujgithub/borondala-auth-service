@@ -1,5 +1,5 @@
 import ApiError from '../../../../../errors/ApiError';
-import { Watch } from './Watch.model';
+import { Watch } from './watch.model';
 import { IWatch } from './watch.interface';
 import { IPaginationOptions } from '../../../../../interfaces/pagination';
 import { IGenericResponse } from '../../../../../interfaces/common';

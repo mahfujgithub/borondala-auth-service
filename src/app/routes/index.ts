@@ -14,7 +14,11 @@ const moduleRoutes = [
     route: CustomerRoutes,
   },
   {
-    path: '/products',
+    path: '/watch',
+    route: DalaRoutes,
+  },
+  {
+    path: '/dala',
     route: DalaRoutes,
   },
 ]
