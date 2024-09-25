@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose'
 import { IWatch, WatchModel } from './watch.interface'
-import ApiError from '../../../../errors/ApiError'
+import ApiError from '../../../../../errors/ApiError'
 import status from 'http-status'
 
 const watchSchema = new Schema<IWatch>(

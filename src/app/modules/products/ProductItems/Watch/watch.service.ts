@@ -1,9 +1,9 @@
-import ApiError from '../../../../errors/ApiError';
-import { Watch } from './watch.model';
+import ApiError from '../../../../../errors/ApiError';
+import { Watch } from './Watch.model';
 import { IWatch } from './watch.interface';
-import { IPaginationOptions } from '../../../../interfaces/pagination';
-import { IGenericResponse } from '../../../../interfaces/common';
-import { paginationHelpers } from '../../../../helpers/paginationHelper';
+import { IPaginationOptions } from '../../../../../interfaces/pagination';
+import { IGenericResponse } from '../../../../../interfaces/common';
+import { paginationHelpers } from '../../../../../helpers/paginationHelper';
 import { SortOrder } from 'mongoose';
 
 const createWatch = async (payload: IWatch): Promise<IWatch | null> => {

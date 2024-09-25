@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
 import { WatchService } from './watch.service';
-import catchAsync from '../../../../shared/catchAsync';
-import sendResponse from '../../../../shared/sendResponse';
+import catchAsync from '../../../../../shared/catchAsync';
+import sendResponse from '../../../../../shared/sendResponse';
 import httpStatus from 'http-status';
 import { IWatch } from './watch.interface';
-import pick from '../../../../shared/pick';
-import { paginationFields } from '../../../../constants/pagination';
+import pick from '../../../../../shared/pick';
+import { paginationFields } from '../../../../../constants/pagination';
 
 const createWatch = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
