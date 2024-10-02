@@ -8,7 +8,7 @@ const userSchema = new Schema<IUser>(
       required: true,
     },
     phone: {
-      type: String,
+      type: Number,
       required: true,
       unique: true,
     },
@@ -16,7 +16,23 @@ const userSchema = new Schema<IUser>(
       type: String,
       required: true,
       unique: true,
-    }
+    },
+    address: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    confirmPassword: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+
   },
   {
     timestamps: true,

@@ -9,10 +9,6 @@ const customerSchema = new Schema<ICustomer>(
       required: true,
       unique: true,
     },
-    gender: {
-      type: String,
-      required: true,
-    },
     badgeName: {
       type: String,
       default: '',

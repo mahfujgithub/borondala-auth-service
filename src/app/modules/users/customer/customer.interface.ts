@@ -2,7 +2,6 @@ import { Model, Types } from 'mongoose'
 
 export type ICustomer = {
   id: string
-  gender: string
   badgeName: string
   user: Types.ObjectId
 }
