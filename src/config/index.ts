@@ -7,5 +7,5 @@ export default {
   env: process.env.NODE_ENV,
   database_url: process.env.DATABASE_URL,
   port: process.env.PORT || 5000,
-  defaultPassword: process.env.DEFAULT_ADMIN_AND_SELLER_PASSWORD,
+  defaultAdminAndSellerPassword: process.env.DEFAULT_ADMIN_AND_SELLER_PASSWORD,
 }
