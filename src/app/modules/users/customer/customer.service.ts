@@ -2,9 +2,10 @@ import config from '../../../../config/index'
 import ApiError from '../../../../errors/ApiError'
 import { Customer } from './customer.model'
 import { ICustomer } from './customer.interface'
-import { generateCustomerId } from './customer.utils'
+// import { generateCustomerId } from './customer.utils'
 import { IUser } from '../common/user.interface'
 import { User } from '../common/user.model'
+import { generateCustomerId } from '../common/user.utils'
 
 const createCustomer = async (
   user: IUser,

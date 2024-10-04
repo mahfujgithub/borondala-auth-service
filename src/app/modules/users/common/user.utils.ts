@@ -1,24 +1,49 @@
-import { User } from './user.model'
+import { User } from './user.model';
 
-let lastUserId = 0
+let lastUserId = 0;
 
-export const findLastUserId = async () => {
-  const lastUser = await User.findOne({}, { id: 1, _id: 0 })
+export const findLastCustomerId = async () => {
+  const lastCustomer = await User.findOne({
+    role: 'customer'
+  }, { id: 1, _id: 0 })
     .sort({
       createdAt: -1,
     })
-    .lean()
+    .lean();
 
-  return lastUser?.id
-}
+  return lastCustomer?.id ? lastCustomer?.id?.substring(4) : undefined;
+};
 
-export const generateUserId = async () => {
-  const currentId = (await findLastUserId()) || (0).toString().padStart(5, '0')
+export const generateCustomerId = async () => {
+  const currentId =
+    (await findLastCustomerId()) || (0).toString().padStart(5, '0');
 
-  const incrementedId = (parseInt(currentId) + 1).toString().padStart(5, '0')
+  let incrementedId = (parseInt(currentId) + 1).toString().padStart(5, '0');
 
-  return incrementedId
+  incrementedId = `C-${incrementedId}`
 
-  // lastUserId++;
-  // return String(lastUserId).padStart(5, '0')
-}
+  return incrementedId;
+};
+
+export const findLastAdminId = async () => {
+  const lastAdmin = await User.findOne({
+    role: 'admin'
+  }, { id: 1, _id: 0 })
+    .sort({
+      createdAt: -1,
+    })
+    .lean();
+
+  return lastAdmin?.id ? lastAdmin?.id?.substring(4) : undefined;
+};
+
+export const generateAdminId = async () => {
+  const currentId =
+    (await findLastAdminId()) || (0).toString().padStart(5, '0');
+
+  let incrementedId = (parseInt(currentId) + 1).toString().padStart(5, '0');
+
+  incrementedId = `A-${incrementedId}`
+
+  return incrementedId;
+};

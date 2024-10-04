@@ -9,9 +9,9 @@ const customerSchema = new Schema<ICustomer>(
       required: true,
       unique: true,
     },
-    badgeName: {
+    badge: {
       type: String,
-      default: '',
+      default: 'none',
     },
     user: {
       type: Schema.Types.ObjectId,

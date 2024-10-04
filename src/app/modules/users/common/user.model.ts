@@ -3,6 +3,21 @@ import { IUser, UserModel } from './user.interface'
 
 const userSchema = new Schema<IUser>(
   {
+    id: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    role: {
+      type: String,
+      required: true,
+      default: 'customer'
+    },
+    badge: {
+      type: String,
+      required: true,
+      default: 'none'
+    },
     name: {
       type: String,
       required: true,
@@ -32,11 +47,10 @@ const userSchema = new Schema<IUser>(
       required: true,
       unique: true,
     },
-
   },
   {
     timestamps: true,
   },
-)
+);
 
 export const User = model<IUser, UserModel>('Users', userSchema)
