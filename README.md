@@ -12,3 +12,4 @@
 * cors
 * winston
 * ts-node-dev
+* husky
