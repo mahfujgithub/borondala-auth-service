@@ -9,7 +9,7 @@ export type CustomerName = {
 export type ICustomer = {
   id?: string;
   badge?: string;
-  name: CustomerName;
+  name: CustomerName; //embedded object
   email: string;
   image?: string;
   password: string;
@@ -23,3 +23,11 @@ export type ICustomer = {
 };
 
 export type CustomerModel = Model<ICustomer, Record<string, unknown>>;
+
+export type ICustomerFilters = {
+  searchTerm?: string;
+  id?: string;
+  email?: string;
+  contact?: string;
+  presentAddress?: string;
+};
