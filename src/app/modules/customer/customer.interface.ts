@@ -22,7 +22,15 @@ export type ICustomer = {
   permanentAddress?: string;
 };
 
-export type CustomerModel = Model<ICustomer, Record<string, unknown>>;
+export type IUserMethods = {
+  isUserExist(email: string): Promise<Partial<ICustomer>>;
+  isPasswordMatched(
+    givenPassword: string,
+    savedPassword: string,
+  ): Promise<boolean>;
+};
+
+export type CustomerModel = Model<ICustomer, Record<string, unknown>, IUserMethods>;
 
 export type ICustomerFilters = {
   searchTerm?: string;
@@ -31,3 +39,5 @@ export type ICustomerFilters = {
   contact?: string;
   presentAddress?: string;
 };
+
+

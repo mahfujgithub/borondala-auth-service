@@ -2,7 +2,7 @@ import { Schema, model } from 'mongoose';
 import { IUser, UserModel } from './user.interface';
 import config from "../../../config"
 
-const userSchema = new Schema<IUser>(
+const userSchema = new Schema<IUser, UserModel>(
   {
     id: {
       type: String,
@@ -14,15 +14,14 @@ const userSchema = new Schema<IUser>(
       default: 'customer',
       required: true,
     },
-    defaultAdminAndSellerPassword: {
-      type: String,
-      default: config.defaultAdminAndSellerPassword
-    },
     customer: {
       type: Schema.Types.ObjectId,
       ref: 'customers',
-      required: true
-    }
+    },
+    admin: {
+      type: Schema.Types.ObjectId,
+      ref: 'admins',
+    },
   },
   {
     timestamps: true,

@@ -1,8 +1,14 @@
 import { Schema, model } from 'mongoose';
-import { ICustomer, CustomerModel } from './customer.interface';
+import { ICustomer, CustomerModel, IUserMethods } from './customer.interface';
 import { gender } from './customer.constant';
+import bycrypt from 'bcrypt';
 
-export const CustomerSchema = new Schema<ICustomer, CustomerModel>(
+export const CustomerSchema = new Schema<
+  ICustomer,
+  CustomerModel,
+  Record<string, unknown>,
+  IUserMethods
+>(
   {
     id: {
       type: String,
@@ -57,15 +63,28 @@ export const CustomerSchema = new Schema<ICustomer, CustomerModel>(
     },
     permanentAddress: {
       type: String,
-    }
+    },
   },
   {
     timestamps: true,
     toJSON: {
-        virtuals: true
-    }
+      virtuals: true,
+    },
   },
 );
+
+CustomerSchema.methods.isUserExist = async function (
+  email: string,
+): Promise<Partial<ICustomer> | null> {
+  return await Customer.findOne({ email }, { email: 1, badge:1, password: 1 });
+};
+
+CustomerSchema.methods.isPasswordMatched = async function (
+  givenPassword: string,
+  savedPassword: string
+): Promise<boolean> {
+  return await bycrypt.compare(givenPassword, savedPassword);
+};
 
 export const Customer = model<ICustomer, CustomerModel>(
   'Customers',

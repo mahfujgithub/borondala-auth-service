@@ -5,9 +5,9 @@ import { UserValidation } from './user.validation';
 import validateRequest from '../../middlewares/validateRequest';
 
 router.post(
-  '/create-customer',
+  '/create-admin',
   validateRequest(UserValidation.createUserZodSchema),
-  UserController.createCustomer,
+  UserController.createAdmin,
 );
 
 export const UserRoutes = router;

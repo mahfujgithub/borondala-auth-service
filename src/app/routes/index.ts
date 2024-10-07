@@ -2,6 +2,8 @@ import express from 'express';
 import { UserRoutes } from '../modules/users/user.route';
 import { CustomerRoutes } from '../modules/customer/customer.route';
 import { DalaRoutes } from '../modules/products/ProductItems/GiftDala/dala.route';
+import { AdminRoutes } from '../modules/admin/admin.route';
+import { AuthRoutes } from '../modules/auth/auth.route';
 const router = express.Router();
 
 const moduleRoutes = [
@@ -10,8 +12,12 @@ const moduleRoutes = [
     route: CustomerRoutes,
   },
   {
-    path: '/users',
-    route: UserRoutes,
+    path: '/admins',
+    route: AdminRoutes,
+  },
+  {
+    path: '/auth',
+    route: AuthRoutes,
   },
   {
     path: '/watch',
