@@ -6,7 +6,6 @@ import jwt, { Secret } from 'jsonwebtoken';
 import config from '../../../config';
 import { jwtHelpers } from '../../../helpers/jwtHelpers';
 
-
 const loginUser = async (payload: IAuth): Promise<ILoginUserResponse> => {
   const { email, password } = payload;
 
@@ -28,7 +27,7 @@ const loginUser = async (payload: IAuth): Promise<ILoginUserResponse> => {
 
   //   create access token & refresh token
 
-  const { email: customerEmail, badge } = isUserExist;
+  const { email: customerEmail, badge, } = isUserExist;
 
   const accessToken = jwtHelpers.createToken(
     { customerEmail, badge },
@@ -48,6 +47,27 @@ const loginUser = async (payload: IAuth): Promise<ILoginUserResponse> => {
   };
 };
 
+const refreshToken = async (token: string) => {
+  let verifiedToken = null;
+
+  const customer = new Customer();
+
+  try {
+    const verifiedToken = jwt.verify(token, config.jwt.refresh_secret);
+  } catch (err) {
+    throw ApiError(httpStatus.FORBIDDEN, 'Invalid refresh token!')
+  }
+
+  const {customerEmail, badge} = verifiedToken;
+
+  const isUserExist = await customer.isUserExist(customerEmail)
+
+  if(!isUserExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist!')
+  }
+};
+
 export const AuthService = {
   loginUser,
+  refreshToken,
 };

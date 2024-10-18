@@ -7,9 +7,7 @@ import { IUser } from './user.interface';
 
 const createCustomer = catchAsync(
   async (req: Request, res: Response) => {
-    console.log(req.cookies, 'cookie')
     const { customer, ...userData } = req.body;
-
 
     const result = await UserService.createCustomer(customer, userData);
 
