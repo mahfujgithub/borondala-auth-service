@@ -1,7 +1,7 @@
 import httpStatus from 'http-status';
 import ApiError from '../../../errors/ApiError';
 import { Customer } from '../customer/customer.model';
-import { IAuth, ILoginUserResponse } from './auth.interface';
+import { IAuth, ILoginUserResponse, IRefreshTokenResponse } from './auth.interface';
 import jwt, { Secret } from 'jsonwebtoken';
 import config from '../../../config';
 import { jwtHelpers } from '../../../helpers/jwtHelpers';
@@ -26,8 +26,7 @@ const loginUser = async (payload: IAuth): Promise<ILoginUserResponse> => {
   }
 
   //   create access token & refresh token
-
-  const { email: customerEmail, badge, } = isUserExist;
+  const { email: customerEmail, badge } = isUserExist;
 
   const accessToken = jwtHelpers.createToken(
     { customerEmail, badge },
@@ -47,24 +46,42 @@ const loginUser = async (payload: IAuth): Promise<ILoginUserResponse> => {
   };
 };
 
-const refreshToken = async (token: string) => {
-  let verifiedToken = null;
-
+const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
   const customer = new Customer();
 
+  let verifiedToken = null;
+
   try {
-    const verifiedToken = jwt.verify(token, config.jwt.refresh_secret);
+    verifiedToken = jwtHelpers.verifyToken(
+      token,
+      config.jwt.refresh_secret as Secret,
+    );
   } catch (err) {
-    throw ApiError(httpStatus.FORBIDDEN, 'Invalid refresh token!')
+    throw new ApiError(httpStatus.FORBIDDEN, 'Invalid refresh token!');
   }
 
-  const {customerEmail, badge} = verifiedToken;
+  const { customerEmail } = verifiedToken;
 
-  const isUserExist = await customer.isUserExist(customerEmail)
+  const isUserExist = await customer.isUserExist(customerEmail);
 
-  if(!isUserExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist!')
+  if (!isUserExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist!');
   }
+
+  // generate new token
+
+  const newAccessToken = jwtHelpers.createToken(
+    {
+      email: isUserExist.email,
+      badge: isUserExist.badge,
+    },
+    config.jwt.secret as Secret,
+    config.jwt.expires_in as string,
+  );
+
+  return {
+    accessToken: newAccessToken,
+  };
 };
 
 export const AuthService = {

@@ -6,8 +6,12 @@ export type IAuth = {
 };
 
 export type ILoginUserResponse = {
-    accessToken: string;
-    refreshToken?: string;
-}
+  accessToken: string;
+  refreshToken?: string;
+};
+
+export type IRefreshTokenResponse = {
+  accessToken: string;
+};
 
 export type AuthModel = Model<IAuth, Record<string, unknown>>;
