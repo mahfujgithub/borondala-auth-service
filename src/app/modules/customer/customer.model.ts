@@ -2,6 +2,7 @@ import { Schema, model } from 'mongoose';
 import { ICustomer, CustomerModel, IUserMethods } from './customer.interface';
 import { gender } from './customer.constant';
 import bycrypt from 'bcrypt';
+import config from '../../../config';
 
 export const CustomerSchema = new Schema<
   ICustomer,
@@ -90,6 +91,15 @@ CustomerSchema.methods.isPasswordMatched = async function (
 ): Promise<boolean> {
   return await bycrypt.compare(givenPassword, savedPassword);
 };
+
+CustomerSchema.pre('save', async function (next) {
+  const customer = this;
+  customer.password = await bycrypt.hash(
+    customer.password as string,
+    Number(config.bycrypt_salt_rounds)
+  )
+  next();
+})
 
 export const Customer = model<ICustomer, CustomerModel>(
   'Customers',
