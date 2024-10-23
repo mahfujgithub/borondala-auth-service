@@ -2,7 +2,7 @@ import httpStatus from 'http-status';
 import ApiError from '../../../errors/ApiError';
 import { Customer } from '../customer/customer.model';
 import { IAuth, ILoginUserResponse, IRefreshTokenResponse } from './auth.interface';
-import jwt, { Secret } from 'jsonwebtoken';
+import { Secret } from 'jsonwebtoken';
 import config from '../../../config';
 import { jwtHelpers } from '../../../helpers/jwtHelpers';
 
@@ -26,16 +26,16 @@ const loginUser = async (payload: IAuth): Promise<ILoginUserResponse> => {
   }
 
   //   create access token & refresh token
-  const { email: customerEmail, badge } = isUserExist;
+  const { email: customerEmail, role } = isUserExist;
 
   const accessToken = jwtHelpers.createToken(
-    { customerEmail, badge },
+    { customerEmail, role },
     config.jwt.secret as Secret,
     config.jwt.expires_in as string,
   );
 
   const refreshToken = jwtHelpers.createToken(
-    { customerEmail, badge },
+    { customerEmail, role },
     config.jwt.refresh_secret as Secret,
     config.jwt.refresh_expires_in as string,
   );
@@ -73,7 +73,7 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
   const newAccessToken = jwtHelpers.createToken(
     {
       email: isUserExist.email,
-      badge: isUserExist.badge,
+      role: isUserExist.role,
     },
     config.jwt.secret as Secret,
     config.jwt.expires_in as string,

@@ -15,6 +15,11 @@ export const CustomerSchema = new Schema<
       required: true,
       unique: true,
     },
+    role: {
+      type: String,
+      default: 'customer',
+      required: true,
+    },
     badge: {
       type: String,
       default: 'general',
@@ -76,7 +81,7 @@ export const CustomerSchema = new Schema<
 CustomerSchema.methods.isUserExist = async function (
   email: string,
 ): Promise<Partial<ICustomer> | null> {
-  return await Customer.findOne({ email }, { email: 1, badge:1, password: 1 });
+  return await Customer.findOne({ email }, { email: 1, role:1, password: 1 });
 };
 
 CustomerSchema.methods.isPasswordMatched = async function (

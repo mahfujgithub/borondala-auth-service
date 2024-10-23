@@ -4,6 +4,7 @@ import { gender } from '../customer/customer.constant';
 const createUserZodSchema = z.object({
   body: z.object({
     customer: z.object({
+      role: z.string().optional(),
       badge: z.string().optional(),
       name: z.object({
         firstName: z.string({

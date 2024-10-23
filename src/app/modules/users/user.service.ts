@@ -32,6 +32,7 @@ const createCustomer = async (
 
   // set role
   user.role = 'customer';
+  customer.role = 'customer';
 
   const session = await mongoose.startSession();
 

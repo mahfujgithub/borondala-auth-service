@@ -8,6 +8,7 @@ export type CustomerName = {
 
 export type ICustomer = {
   id?: string;
+  role: string;
   badge?: string;
   name: CustomerName; //embedded object
   email: string;
