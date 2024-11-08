@@ -64,7 +64,7 @@ const getAllAdmins = async (
   };
 };
 
-const getAdmin = async (id: string): Promise<IAdmin | null> => {
+const getSingleAdmin = async (id: string): Promise<IAdmin | null> => {
   const result = await Admin.findById(id);
 
   return result;
@@ -112,7 +112,7 @@ const deleteAdmin = async (id: string): Promise<IAdmin | null> => {
 
 export const AdminService = {
   getAllAdmins,
-  getAdmin,
+  getSingleAdmin,
   updateAdmin,
   deleteAdmin,
 };

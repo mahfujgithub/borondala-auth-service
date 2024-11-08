@@ -8,7 +8,7 @@ import { paginationFields } from '../../../constants/pagination';
 import { adminFilterableFields } from './admin.constant';
 import { IAdmin } from './admin.interface';
 
-const getAllCustomers = catchAsync(async (req: Request, res: Response) => {
+const getAllAdmins = catchAsync(async (req: Request, res: Response) => {
   const filters = pick(req.query, adminFilterableFields);
   const paginationOptions = pick(req.query, paginationFields);
 
@@ -26,10 +26,10 @@ const getAllCustomers = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getCustomer = catchAsync(async (req: Request, res: Response) => {
+const getSingleAdmin = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  const result = await AdminService.getAdmin(id);
+  const result = await AdminService.getSingleAdmin(id);
 
   sendResponse<IAdmin>(res, {
     statusCode: httpStatus.OK,
@@ -39,12 +39,12 @@ const getCustomer = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const updateCustomer = catchAsync(async (req: Request, res: Response) => {
+const updateAdmin = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  const updatedDala = req.body;
+  const updatedAdmin = req.body;
 
-  const result = await AdminService.updateAdmin(id, updatedDala);
+  const result = await AdminService.updateAdmin(id, updatedAdmin);
 
   sendResponse<IAdmin>(res, {
     statusCode: httpStatus.OK,
@@ -54,7 +54,7 @@ const updateCustomer = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const removeCustomer = catchAsync(async (req: Request, res: Response) => {
+const removeAdmin = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
 
   const result = await AdminService.deleteAdmin(id);
@@ -67,9 +67,9 @@ const removeCustomer = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-export const CustomerController = {
-  getAllCustomers,
-  getCustomer,
-  updateCustomer,
-  removeCustomer,
+export const AdminController = {
+  getAllAdmins,
+  getSingleAdmin,
+  updateAdmin,
+  removeAdmin,
 };
