@@ -38,6 +38,13 @@ const createUserZodSchema = z.object({
       }),
       permanentAddress: z.string().optional(),
     }),
+    user: z.object({
+      email: z
+        .string({
+          required_error: 'field is required!',
+        })
+        .email(),
+    }),
   }),
 });
 
@@ -76,5 +83,5 @@ const createAdminZodSchema = z.object({
 
 export const UserValidation = {
   createUserZodSchema,
-  createAdminZodSchema
+  createAdminZodSchema,
 };

@@ -40,6 +40,13 @@ const createUserZodSchema = zod_1.z.object({
             }),
             permanentAddress: zod_1.z.string().optional(),
         }),
+        user: zod_1.z.object({
+            email: zod_1.z
+                .string({
+                required_error: 'field is required!',
+            })
+                .email(),
+        }),
     }),
 });
 const createAdminZodSchema = zod_1.z.object({
@@ -76,5 +83,5 @@ const createAdminZodSchema = zod_1.z.object({
 });
 exports.UserValidation = {
     createUserZodSchema,
-    createAdminZodSchema
+    createAdminZodSchema,
 };
