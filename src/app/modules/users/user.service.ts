@@ -11,13 +11,82 @@ import httpStatus from 'http-status';
 import { IAdmin } from '../admin/admin.interface';
 import { Admin } from '../admin/admin.model';
 import bycrypt from 'bcrypt'
+import { jwtHelpers } from '../../../helpers/jwtHelpers';
+import { Secret } from 'jsonwebtoken';
 // import { generateUserId } from './user.utils'
+
+// const createCustomer = async (
+//   customer: ICustomer,
+//   user: IUser,
+// ): Promise<IUser | null> => {
+//   // hash password
+//   customer.password = await bycrypt.hash(
+//     customer.password,
+//     Number(config.bycrypt_salt_rounds),
+//   );
+
+//   customer.confirmPassword = await bycrypt.hash(
+//     customer.confirmPassword,
+//     Number(config.bycrypt_salt_rounds),
+//   );
+
+//   let newUserAllData = null;
+
+//   // set role
+//   user.role = 'customer';
+//   customer.role = 'customer';
+
+//   const session = await mongoose.startSession();
+
+//   try {
+//     session.startTransaction();
+//     const id = await generateCustomerId();
+//     user.id = id;
+//     customer.id = id;
+
+//     // array
+//     const newCustomer = await Customer.create([customer], { session });
+
+//     if (!newCustomer.length) {
+//       throw new ApiError(httpStatus.BAD_REQUEST, `Failed to create customer!`);
+//     }
+
+//     // set customer --> _id into user.customer
+
+//     user.customer = newCustomer[0]._id;
+
+//     const newUser = await User.create([user], { session });
+
+//     if (!newUser.length) {
+//       throw new ApiError(httpStatus.BAD_REQUEST, `Failed to create user!`);
+//     }
+
+//     newUserAllData = newUser[0];
+
+//     await session.commitTransaction();
+//   } catch (error) {
+//     console.error('Error creating customer or user:', error);
+//     await session.abortTransaction();
+//     throw error;
+//   } finally {
+//     session.endSession();
+//   }
+
+//   if (newUserAllData) {
+//     newUserAllData = await User.findOne({ id: newUserAllData.id });
+//   }
+
+//   return newUserAllData;
+// };
 
 const createCustomer = async (
   customer: ICustomer,
   user: IUser,
-): Promise<IUser | null> => {
-  // hash password
+): Promise<{
+  user: IUser;
+  accessToken: string;
+  refreshToken: string;
+} | null> => {
   customer.password = await bycrypt.hash(
     customer.password,
     Number(config.bycrypt_salt_rounds),
@@ -30,7 +99,6 @@ const createCustomer = async (
 
   let newUserAllData = null;
 
-  // set role
   user.role = 'customer';
   customer.role = 'customer';
 
@@ -42,25 +110,19 @@ const createCustomer = async (
     user.id = id;
     customer.id = id;
 
-    // array
     const newCustomer = await Customer.create([customer], { session });
-
     if (!newCustomer.length) {
       throw new ApiError(httpStatus.BAD_REQUEST, `Failed to create customer!`);
     }
 
-    // set customer --> _id into user.customer
-
     user.customer = newCustomer[0]._id;
 
     const newUser = await User.create([user], { session });
-
     if (!newUser.length) {
       throw new ApiError(httpStatus.BAD_REQUEST, `Failed to create user!`);
     }
 
     newUserAllData = newUser[0];
-
     await session.commitTransaction();
   } catch (error) {
     console.error('Error creating customer or user:', error);
@@ -74,8 +136,34 @@ const createCustomer = async (
     newUserAllData = await User.findOne({ id: newUserAllData.id });
   }
 
-  return newUserAllData;
+  if (!newUserAllData) {
+    throw new ApiError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      'User creation failed!',
+    );
+  }
+
+  const { id, email, role } = newUserAllData;
+
+  const accessToken = jwtHelpers.createToken(
+    { id, customer, role },
+    config.jwt.secret as Secret,
+    config.jwt.expires_in as string,
+  );
+
+  const refreshToken = jwtHelpers.createToken(
+    { id, email, role },
+    config.jwt.refresh_secret as Secret,
+    config.jwt.refresh_expires_in as string,
+  );
+
+  return {
+    user: newUserAllData,
+    accessToken,
+    refreshToken,
+  };
 };
+
 
 
 const createAdmin = async (

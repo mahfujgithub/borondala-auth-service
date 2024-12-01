@@ -11,7 +11,6 @@ import { ENUM_USER_ROLE } from '../../../enums/user';
 router.post(
   '/create',
   validateRequest(UserValidation.createAdminZodSchema),
-  auth(ENUM_USER_ROLE.ADMIN),
   UserController.createAdmin,
 );
 

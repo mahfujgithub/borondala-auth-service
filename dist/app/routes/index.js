@@ -14,7 +14,7 @@ const moduleRoutes = [
         route: customer_route_1.CustomerRoutes,
     },
     {
-        path: '/admins',
+        path: '/admin',
         route: admin_route_1.AdminRoutes,
     },
     {

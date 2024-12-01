@@ -12,7 +12,7 @@ const user_validation_1 = require("../users/user.validation");
 const validateRequest_1 = __importDefault(require("../../middlewares/validateRequest"));
 const auth_1 = __importDefault(require("../../middlewares/auth"));
 // Creating an Admin (Admin Route)
-router.post('/create', (0, validateRequest_1.default)(user_validation_1.UserValidation.createAdminZodSchema), (0, auth_1.default)("admin" /* ENUM_USER_ROLE.ADMIN */), user_controller_1.UserController.createAdmin);
+router.post('/create', (0, validateRequest_1.default)(user_validation_1.UserValidation.createAdminZodSchema), user_controller_1.UserController.createAdmin);
 // Get All Admins Info (Admin Route)
 router.get('/', (0, auth_1.default)("admin" /* ENUM_USER_ROLE.ADMIN */), admin_controller_1.AdminController.getAllAdmins);
 exports.AdminRoutes = router;

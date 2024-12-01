@@ -12,11 +12,11 @@ import { ENUM_USER_ROLE } from '../../../enums/user';
 router.post(
   '/register',
   validateRequest(UserValidation.createUserZodSchema),
-  UserController.createCustomer,
+  UserController.registerCustomer,
 );
 
 // Get All Customers Info (Admin Route)
-router.get('/', auth(ENUM_USER_ROLE.ADMIN), CustomerController.getAllCustomers);
+router.get('/', auth(ENUM_USER_ROLE.CUSTOMER), CustomerController.getAllCustomers);
 
 // Get Customer Info Himself/Herself
 router.get('/:id', CustomerController.getCustomer);

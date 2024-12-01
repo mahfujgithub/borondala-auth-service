@@ -13,9 +13,9 @@ const customer_validation_1 = require("./customer.validation");
 const validateRequest_1 = __importDefault(require("../../middlewares/validateRequest"));
 const auth_1 = __importDefault(require("../../middlewares/auth"));
 // Signup Customer Himself/Herself
-router.post('/register', (0, validateRequest_1.default)(user_validation_1.UserValidation.createUserZodSchema), user_controller_1.UserController.createCustomer);
+router.post('/register', (0, validateRequest_1.default)(user_validation_1.UserValidation.createUserZodSchema), user_controller_1.UserController.registerCustomer);
 // Get All Customers Info (Admin Route)
-router.get('/', (0, auth_1.default)("admin" /* ENUM_USER_ROLE.ADMIN */), customer_controller_1.CustomerController.getAllCustomers);
+router.get('/', (0, auth_1.default)("customer" /* ENUM_USER_ROLE.CUSTOMER */), customer_controller_1.CustomerController.getAllCustomers);
 // Get Customer Info Himself/Herself
 router.get('/:id', customer_controller_1.CustomerController.getCustomer);
 // Update Customer Info Himself/Herself
