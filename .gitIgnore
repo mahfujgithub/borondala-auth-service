@@ -2,4 +2,9 @@ node_modules
 .env
 logs
 .husky
+<<<<<<< HEAD
 .vscode
+=======
+.vscode
+.vercel
+>>>>>>> 64c073203c2f4a037ce766b31fa441b0d5de8e87
