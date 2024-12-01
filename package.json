@@ -8,7 +8,8 @@
     "lint:check": "eslint --ignore-pattern .eslintignore .js,.ts .",
     "prettier:fix": "prettier --write .",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "husky"
+    "prepare": "husky",
+    "build": "tsc"
   },
   "author": "BoronDala",
   "license": "ISC",
