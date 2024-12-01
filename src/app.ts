@@ -16,6 +16,10 @@ app.use(express.urlencoded({ extended: true }));
 // Application Routes
 app.use('/api/v1', routes);
 
+app.get('/', (req: Request, res: Response, next: NextFunction) => {
+  res.send('server running')
+})
+
 // global error handler
 app.use(globalErrorHandler);
 
@@ -36,8 +40,5 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 // testing
-// app.get('/', (req: Request, res: Response, next: NextFunction) => {
-//   res.send('server running')
-// })
 
 export default app;
