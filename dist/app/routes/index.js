@@ -6,12 +6,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const customer_route_1 = require("../modules/customer/customer.route");
 const admin_route_1 = require("../modules/admin/admin.route");
+const seller_route_1 = require("../modules/seller/seller.route");
 const auth_route_1 = require("../modules/auth/auth.route");
 const router = express_1.default.Router();
 const moduleRoutes = [
     {
         path: '/',
         route: customer_route_1.CustomerRoutes,
+    },
+    {
+        path: '/seller',
+        route: seller_route_1.SellerRoutes,
     },
     {
         path: '/admin',

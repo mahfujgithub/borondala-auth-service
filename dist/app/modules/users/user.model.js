@@ -17,6 +17,10 @@ const userSchema = new mongoose_1.Schema({
         type: mongoose_1.Schema.Types.ObjectId,
         ref: 'customers',
     },
+    seller: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: 'sellers',
+    },
     admin: {
         type: mongoose_1.Schema.Types.ObjectId,
         ref: 'admins',

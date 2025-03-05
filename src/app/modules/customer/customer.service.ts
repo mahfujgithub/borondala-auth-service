@@ -10,7 +10,7 @@ import { customerSearchableFields } from './customer.constant';
 
 const getAllCustomers = async (
   paginationOptions: IPaginationOptions,
-  filters: ICustomerFilters,
+  filters: ICustomerFilters
 ): Promise<IGenericResponse<ICustomer[]>> => {
   const { searchTerm, ...filtersData } = filters;
 

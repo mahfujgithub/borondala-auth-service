@@ -3,18 +3,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CustomerController = void 0;
+exports.SellerController = void 0;
 const catchAsync_1 = __importDefault(require("../../../shared/catchAsync"));
-const customer_service_1 = require("./customer.service");
+const seller_service_1 = require("./seller.service");
 const sendResponse_1 = __importDefault(require("../../../shared/sendResponse"));
 const http_status_1 = __importDefault(require("http-status"));
 const pick_1 = __importDefault(require("../../../shared/pick"));
 const pagination_1 = require("../../../constants/pagination");
-const customer_constant_1 = require("./customer.constant");
-const getAllCustomers = (0, catchAsync_1.default)(async (req, res) => {
-    const filters = (0, pick_1.default)(req.query, customer_constant_1.customerFilterableFields);
+const seller_constant_1 = require("./seller.constant");
+const getAllSellers = (0, catchAsync_1.default)(async (req, res) => {
+    const filters = (0, pick_1.default)(req.query, seller_constant_1.sellerFilterableFields);
     const paginationOptions = (0, pick_1.default)(req.query, pagination_1.paginationFields);
-    const result = await customer_service_1.CustomerService.getAllCustomers(paginationOptions, filters);
+    const result = await seller_service_1.SellerService.getAllSellers(paginationOptions, filters);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
@@ -23,9 +23,9 @@ const getAllCustomers = (0, catchAsync_1.default)(async (req, res) => {
         data: result.data,
     });
 });
-const getCustomer = (0, catchAsync_1.default)(async (req, res) => {
+const getSeller = (0, catchAsync_1.default)(async (req, res) => {
     const { id } = req.params;
-    const result = await customer_service_1.CustomerService.getCustomer(id);
+    const result = await seller_service_1.SellerService.getSeller(id);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
@@ -33,10 +33,10 @@ const getCustomer = (0, catchAsync_1.default)(async (req, res) => {
         data: result,
     });
 });
-const updateCustomer = (0, catchAsync_1.default)(async (req, res) => {
+const updateSeller = (0, catchAsync_1.default)(async (req, res) => {
     const { id } = req.params;
     const updatedCustomer = req.body;
-    const result = await customer_service_1.CustomerService.updateCustomer(id, updatedCustomer);
+    const result = await seller_service_1.SellerService.updateSeller(id, updatedCustomer);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
@@ -44,9 +44,9 @@ const updateCustomer = (0, catchAsync_1.default)(async (req, res) => {
         data: result,
     });
 });
-const removeCustomer = (0, catchAsync_1.default)(async (req, res) => {
+const removeSeller = (0, catchAsync_1.default)(async (req, res) => {
     const id = req.params.id;
-    const result = await customer_service_1.CustomerService.deleteCustomer(id);
+    const result = await seller_service_1.SellerService.deleteSeller(id);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
@@ -54,9 +54,9 @@ const removeCustomer = (0, catchAsync_1.default)(async (req, res) => {
         data: result,
     });
 });
-exports.CustomerController = {
-    getAllCustomers,
-    getCustomer,
-    updateCustomer,
-    removeCustomer
+exports.SellerController = {
+    getAllSellers,
+    getSeller,
+    updateSeller,
+    removeSeller,
 };

@@ -7,21 +7,6 @@ import { IUser } from './user.interface';
 import config from '../../../config';
 import ApiError from '../../../errors/ApiError';
 
-// const createCustomer = catchAsync(
-//   async (req: Request, res: Response) => {
-//     const { customer, ...userData } = req.body;
-
-//     const result = await UserService.createCustomer(customer, userData);
-
-//     sendResponse<IUser>(res, {
-//       statusCode: httpStatus.OK,
-//       success: true,
-//       message: 'User created successfully!',
-//       data: result,
-//     });
-//   },
-// );
-
 const registerCustomer = catchAsync(async (req: Request, res: Response) => {
   const { customer, user } = req.body;
 
@@ -53,20 +38,20 @@ const registerCustomer = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-// const createSeller = catchAsync(
-//   async (req: Request, res: Response) => {
-//     const { customer, ...userData } = req.body;
+const createSeller = catchAsync(
+  async (req: Request, res: Response) => {
+    const { seller, ...userData } = req.body;
 
-//     const result = await UserService.createCustomer(customer, userData);
+    const result = await UserService.createSeller(seller, userData);
 
-//     sendResponse<IUser>(res, {
-//       statusCode: httpStatus.OK,
-//       success: true,
-//       message: 'User created successfully!',
-//       data: result,
-//     });
-//   },
-// );
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'User created successfully!',
+      data: result,
+    });
+  },
+);
 
 const createAdmin = catchAsync(
   async (req: Request, res: Response) => {
@@ -84,7 +69,7 @@ const createAdmin = catchAsync(
 );
 
 export const UserController = {
-  // createCustomer,
+  createSeller,
   registerCustomer,
-  createAdmin
+  createAdmin,
 };

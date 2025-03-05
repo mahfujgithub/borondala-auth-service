@@ -10,18 +10,6 @@ const sendResponse_1 = __importDefault(require("../../../shared/sendResponse"));
 const http_status_1 = __importDefault(require("http-status"));
 const config_1 = __importDefault(require("../../../config"));
 const ApiError_1 = __importDefault(require("../../../errors/ApiError"));
-// const createCustomer = catchAsync(
-//   async (req: Request, res: Response) => {
-//     const { customer, ...userData } = req.body;
-//     const result = await UserService.createCustomer(customer, userData);
-//     sendResponse<IUser>(res, {
-//       statusCode: httpStatus.OK,
-//       success: true,
-//       message: 'User created successfully!',
-//       data: result,
-//     });
-//   },
-// );
 const registerCustomer = (0, catchAsync_1.default)(async (req, res) => {
     const { customer, user } = req.body;
     const result = await user_service_1.UserService.createCustomer(customer, user);
@@ -43,18 +31,16 @@ const registerCustomer = (0, catchAsync_1.default)(async (req, res) => {
         data: others
     });
 });
-// const createSeller = catchAsync(
-//   async (req: Request, res: Response) => {
-//     const { customer, ...userData } = req.body;
-//     const result = await UserService.createCustomer(customer, userData);
-//     sendResponse<IUser>(res, {
-//       statusCode: httpStatus.OK,
-//       success: true,
-//       message: 'User created successfully!',
-//       data: result,
-//     });
-//   },
-// );
+const createSeller = (0, catchAsync_1.default)(async (req, res) => {
+    const { seller, ...userData } = req.body;
+    const result = await user_service_1.UserService.createSeller(seller, userData);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'User created successfully!',
+        data: result,
+    });
+});
 const createAdmin = (0, catchAsync_1.default)(async (req, res) => {
     const { admin, ...userData } = req.body;
     const result = await user_service_1.UserService.createAdmin(admin, userData);
@@ -66,7 +52,7 @@ const createAdmin = (0, catchAsync_1.default)(async (req, res) => {
     });
 });
 exports.UserController = {
-    // createCustomer,
+    createSeller,
     registerCustomer,
-    createAdmin
+    createAdmin,
 };

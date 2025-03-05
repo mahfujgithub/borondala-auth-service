@@ -11,6 +11,7 @@ const user_utils_1 = require("./user.utils");
 const config_1 = __importDefault(require("../../../config"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const customer_model_1 = require("../customer/customer.model");
+const seller_model_1 = require("../seller/seller.model");
 const http_status_1 = __importDefault(require("http-status"));
 const admin_model_1 = require("../admin/admin.model");
 const bcrypt_1 = __importDefault(require("bcrypt"));
@@ -111,6 +112,49 @@ const createCustomer = async (customer, user) => {
         refreshToken,
     };
 };
+const createSeller = async (seller, user) => {
+    // default password
+    if (!seller.password) {
+        seller.password = config_1.default.defaultAdminPassword;
+    }
+    // hash password
+    seller.password = await bcrypt_1.default.hash(seller.password, Number(config_1.default.bycrypt_salt_rounds));
+    let newUserAllData = null;
+    // set role
+    user.role = 'seller';
+    const session = await mongoose_1.default.startSession();
+    try {
+        session.startTransaction();
+        const id = await (0, user_utils_1.generateSellerId)();
+        user.id = id;
+        seller.id = id;
+        // array
+        const newSeller = await seller_model_1.Seller.create([seller], { session });
+        if (!newSeller.length) {
+            throw new ApiError_1.default(http_status_1.default.BAD_REQUEST, `Failed to create seller!`);
+        }
+        // set admin --> _id into user.customer
+        user.seller = newSeller[0]._id;
+        const newUser = await user_model_1.User.create([user], { session });
+        if (!newUser.length) {
+            throw new ApiError_1.default(http_status_1.default.BAD_REQUEST, `Failed to create user!`);
+        }
+        newUserAllData = newUser[0];
+        await session.commitTransaction();
+    }
+    catch (error) {
+        console.error('Error creating customer or user:', error);
+        await session.abortTransaction();
+        throw error;
+    }
+    finally {
+        session.endSession();
+    }
+    if (newUserAllData) {
+        newUserAllData = await user_model_1.User.findOne({ id: newUserAllData.id });
+    }
+    return newUserAllData;
+};
 const createAdmin = async (admin, user) => {
     // default password
     if (!admin.password) {
@@ -156,5 +200,6 @@ const createAdmin = async (admin, user) => {
 };
 exports.UserService = {
     createCustomer,
+    createSeller,
     createAdmin,
 };

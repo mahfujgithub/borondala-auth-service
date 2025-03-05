@@ -2,11 +2,13 @@
 import ApiError from '../../../errors/ApiError';
 import { User } from './user.model';
 import { IUser } from './user.interface';
-import { generateAdminId, generateCustomerId } from './user.utils';
+import { generateAdminId, generateCustomerId, generateSellerId } from './user.utils';
 import { ICustomer } from '../customer/customer.interface';
+import { ISeller } from '../seller/seller.interface';
 import config from '../../../config';
 import mongoose from 'mongoose';
 import { Customer } from '../customer/customer.model';
+import { Seller } from '../seller/seller.model';
 import httpStatus from 'http-status';
 import { IAdmin } from '../admin/admin.interface';
 import { Admin } from '../admin/admin.model';
@@ -164,7 +166,68 @@ const createCustomer = async (
   };
 };
 
+const createSeller = async (
+  seller: IAdmin,
+  user: IUser,
+): Promise<IUser | null> => {
+  // default password
+  if (!seller.password) {
+    seller.password = config.defaultAdminPassword as string;
+  }
 
+  // hash password
+  seller.password = await bycrypt.hash(
+    seller.password,
+    Number(config.bycrypt_salt_rounds),
+  );
+
+  let newUserAllData = null;
+
+  // set role
+  user.role = 'seller';
+
+  const session = await mongoose.startSession();
+
+  try {
+    session.startTransaction();
+    const id = await generateSellerId();
+    user.id = id;
+    seller.id = id;
+
+    // array
+    const newSeller = await Seller.create([seller], { session });
+
+    if (!newSeller.length) {
+      throw new ApiError(httpStatus.BAD_REQUEST, `Failed to create seller!`);
+    }
+
+    // set admin --> _id into user.customer
+
+    user.seller = newSeller[0]._id;
+
+    const newUser = await User.create([user], { session });
+
+    if (!newUser.length) {
+      throw new ApiError(httpStatus.BAD_REQUEST, `Failed to create user!`);
+    }
+
+    newUserAllData = newUser[0];
+
+    await session.commitTransaction();
+  } catch (error) {
+    console.error('Error creating customer or user:', error);
+    await session.abortTransaction();
+    throw error;
+  } finally {
+    session.endSession();
+  }
+
+  if (newUserAllData) {
+    newUserAllData = await User.findOne({ id: newUserAllData.id });
+  }
+
+  return newUserAllData;
+};
 
 const createAdmin = async (
   admin: IAdmin,
@@ -235,5 +298,6 @@ const createAdmin = async (
 
 export const UserService = {
   createCustomer,
+  createSeller,
   createAdmin,
 };

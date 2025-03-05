@@ -25,6 +25,29 @@ export const generateCustomerId = async () => {
   return incrementedId;
 };
 
+export const findLastSellerId = async () => {
+  const lastSeller = await User.findOne({
+    role: 'seller'
+  }, { id: 1, _id: 0 })
+    .sort({
+      createdAt: -1,
+    })
+    .lean();
+
+  return lastSeller?.id ? lastSeller?.id?.substring(4) : undefined;
+};
+
+export const generateSellerId = async () => {
+  const currentId =
+    (await findLastSellerId()) || (0).toString().padStart(5, '0');
+
+  let incrementedId = (parseInt(currentId) + 1).toString().padStart(5, '0');
+
+  incrementedId = `S-${incrementedId}`
+
+  return incrementedId;
+};
+
 export const findLastAdminId = async () => {
   const lastAdmin = await User.findOne({
     role: 'admin'
