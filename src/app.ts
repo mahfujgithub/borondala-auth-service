@@ -5,13 +5,17 @@ import globalErrorHandler from './app/middlewares/globalErrorHandler';
 import routes from './app/routes';
 import httpStatus from 'http-status';
 import cookieParser from 'cookie-parser'
+import path from 'path';
 
 app.use(cors());
 app.use(cookieParser());
-
+  
 // parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Serve static files
+app.use(express.static(path.join(__dirname, '../public')));
 
 // Application Routes
 app.use('/api/v1', routes);
@@ -38,6 +42,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
   next();
 });
+
+
 
 // testing
 
